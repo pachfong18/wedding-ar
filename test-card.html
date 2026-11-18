@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Target Card สำหรับทดสอบ WebAR | Wedding Hologram</title>
+  <title>Target Card แนวนอน สำหรับทดสอบ WebAR | Wedding Hologram</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
@@ -27,7 +27,7 @@
       border-radius: 20px;
       padding: 30px;
       text-align: center;
-      max-width: 820px;
+      max-width: 860px;
       width: 100%;
       box-shadow: 0 15px 40px rgba(0,0,0,0.6);
     }
@@ -49,34 +49,33 @@
       display: inline-block;
       background: rgba(247, 215, 148, 0.15);
       color: #f7d794;
-      padding: 6px 16px;
+      padding: 6px 18px;
       border-radius: 20px;
       font-size: 13px;
       margin-bottom: 20px;
       border: 1px solid rgba(247, 215, 148, 0.35);
     }
     
-    /* Elegant 4:3 Wedding Card Container */
+    /* Dedicated Landscape Wedding Card Container */
     .card-outer-frame {
-      width: 640px;
+      width: 740px;
       max-width: 100%;
       margin: 10px auto 25px;
       background: linear-gradient(135deg, #24160c 0%, #150f1d 100%);
       border: 3px solid #f7d794;
-      border-radius: 16px;
-      padding: 24px 20px;
+      border-radius: 18px;
+      padding: 25px 20px;
       box-shadow: 0 0 35px rgba(247, 215, 148, 0.3);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       box-sizing: border-box;
-      transition: transform 0.3s ease;
     }
 
     .card-header-label {
       font-family: 'Alex Brush', cursive;
-      font-size: 32px;
+      font-size: 34px;
       color: #f7d794;
       margin-bottom: 15px;
       letter-spacing: 1px;
@@ -90,7 +89,7 @@
       text-transform: uppercase;
     }
 
-    /* Target Image must be 100% UN-CROPPED so MindAR can match all feature points */
+    /* Target Image displayed fully in Landscape (Width: 540px, Height: ~298px) */
     .inner-target-wrapper {
       border: 2px solid rgba(247, 215, 148, 0.6);
       border-radius: 8px;
@@ -105,7 +104,6 @@
       max-width: 100%;
       height: auto;
       display: block;
-      /* NEVER use object-fit: cover here to prevent cropping */
     }
 
     /* Controls bar */
@@ -148,46 +146,38 @@
 </head>
 <body>
   <div class="container">
-    <h1>Wedding Target Card (แนวนอน 4:3)</h1>
-    <div class="badge">🎯 การ์ดแต่งงานสำหรับใช้กล้องมือถือส่องทดสอบ</div>
-    <p>เปิดหน้าเว็บ WebAR บนมือถือ แล้ว <strong>หันกล้องมือถือมาส่องที่การ์ดด้านล่างนี้</strong><br>บ่าวสาวจะปรากฏตัวขนาดใหญ่ พร้อม <strong>หัวใจ 3D พุ่งและลอยขึ้นมารอบตัว</strong> ทันทีครับ!</p>
+    <h1>Wedding Target Card (แนวนอน)</h1>
+    <div class="badge">🎯 การ์ดแต่งงานแนวนอน สำหรับส่องด้วยกล้องมือถือ</div>
+    <p>เปิดหน้าเว็บ WebAR บนมือถือ แล้ว <strong>หันกล้องมือถือมาส่องที่การ์ดแนวนอนด้านล่างนี้</strong><br>
+    จะมี <strong>อนิเมชันหัวใจ 3D พุ่งออกมาก่อน แล้วค่อยเฟดออก จากนั้นตัวบ่าวสาวจะปรากฏขึ้นมา</strong> ครับ!</p>
     
-    <!-- Quick Controls -->
+    <!-- Controls -->
     <div class="controls-bar">
-      <button class="btn-action" onclick="toggleCardRotation()">🔄 สลับหมุนการ์ดบนจอ 90°</button>
-      <button class="btn-action" onclick="toggleFullscreen()">⛶ ขยายเต็มจอ</button>
+      <button class="btn-action" onclick="toggleFullscreen()">⛶ ขยายการ์ดเต็มจอ</button>
     </div>
 
-    <!-- Wedding Card Target -->
+    <!-- Landscape Wedding Card Target -->
     <div class="card-outer-frame" id="cardFrame">
       <div class="card-header-label">Wedding Invitation - Save The Date</div>
       
       <div class="inner-target-wrapper">
-        <img src="./assets/card.png" alt="Target Wedding Card">
+        <img src="./assets/card.png" alt="Target Wedding Card แนวนอน">
       </div>
 
-      <div class="card-footer-label">Together Forever • Landscape 4:3</div>
+      <div class="card-footer-label">Together Forever • Landscape Mode</div>
     </div>
 
     <div class="tips">
-      <strong>💡 เคล็ดลับการทดสอบ:</strong>
+      <strong>✨ ลำดับอนิเมชันใหม่:</strong>
       <ul>
-        <li><strong>ภาพกล้องในมือถือ:</strong> ปรับแก้ให้พื้นหลังโปร่งใสแล้ว กล้องจริงจะแสดงขึ้นมา ไม่จอดำอีกต่อไป</li>
-        <li><strong>หากใช้ Brave Browser บนมือถือ:</strong> แนะนำให้กดที่รูป <strong>สิงโตสีส้ม (Brave Shields)</strong> ข้างแถบ URL แล้วกด <strong>ปิด Shields</strong> หรือเปิดด้วย Chrome / Safari แทนครับ</li>
-        <li><strong>การส่อง:</strong> ปรับแสงหน้าจอคอมให้สว่างพอดี แล้วถือมือถือห่างประมาณ 20-30 ซม. ให้เห็นภาพการ์ดเต็มจอ</li>
+        <li><strong>ช่วงที่ 1 (0 – 2.2 วินาที):</strong> หัวใจ 3D ระเบิดพุ่งออกมาจากการ์ดลอยขึ้นมาหามือถืออย่างงดงาม</li>
+        <li><strong>ช่วงที่ 2 (2.2 – 3.0 วินาที):</strong> หัวใจค่อยๆ เฟดจางหายไป (Fade Out)</li>
+        <li><strong>ช่วงที่ 3 (3.0 วินาทีเป็นต้นไป):</strong> ตัวบ่าวสาวโผล่ขึ้นมาขนาดใหญ่ในแนวตั้งตรง พร้อมเล่นวิดีโอเสียงทักทาย</li>
       </ul>
     </div>
   </div>
 
   <script>
-    let isRotated = false;
-    const cardFrame = document.getElementById('cardFrame');
-
-    function toggleCardRotation() {
-      isRotated = !isRotated;
-      cardFrame.style.transform = isRotated ? 'rotate(90deg)' : 'rotate(0deg)';
-    }
-
     function toggleFullscreen() {
       if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().catch(err => console.log(err));
