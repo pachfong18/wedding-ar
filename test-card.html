@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Target Card สำหรับทดสอบ WebAR | Wedding Hologram Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 30px;
+      background: #0f111a;
+      color: #fff;
+      font-family: 'Prompt', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+    .container {
+      background: #1a1c29;
+      border: 1px solid rgba(247, 215, 148, 0.3);
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
+      max-width: 720px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    h1 {
+      font-family: 'Alex Brush', cursive;
+      color: #f7d794;
+      font-size: 42px;
+      margin: 0 0 10px;
+      font-weight: normal;
+    }
+    p {
+      color: #cbd5e1;
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(247, 215, 148, 0.15);
+      color: #f7d794;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(247, 215, 148, 0.3);
+    }
+    .card-wrapper {
+      border: 3px solid #f7d794;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 25px rgba(247, 215, 148, 0.3);
+      display: inline-block;
+      margin: 10px auto 25px;
+      background: #fff;
+    }
+    .card-wrapper img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      width: 550px;
+    }
+    .tips {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 15px;
+      border-radius: 10px;
+      text-align: left;
+      font-size: 13px;
+      color: #94a3b8;
+    }
+    .tips ul {
+      margin: 8px 0 0;
+      padding-left: 20px;
+    }
+    .tips li {
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Wedding Target Card Demo</h1>
+    <div class="badge">🎯 ภาพการ์ดสำหรับใช้กล้องมือถือส่องทดสอบ</div>
+    <p>เมื่อเปิดหน้าเว็บ WebAR บนมือถือแล้ว ให้ <strong>หันกล้องมือถือมาส่องที่รูปภาพด้านล่างนี้</strong><br>ตัวอย่างโฮโลแกรมพร้อมเอฟเฟกต์จะปรากฏขึ้นมาบนรูปการ์ดทันทีครับ!</p>
+    
+    <div class="card-wrapper">
+      <img src="./assets/card.png" alt="Target Wedding Card">
+    </div>
+
+    <div class="tips">
+      <strong>💡 เคล็ดลับการทดสอบ:</strong>
+      <ul>
+        <li>ปรับแสงหน้าจอคอมให้สว่างพอดี ไม่มืดเกินไป</li>
+        <li>ถือมือถือให้ขนานกับหน้าจอคอม ระยะห่างประมาณ 20-30 ซม.</li>
+        <li>เมื่อกล้องจับภาพการ์ดได้แล้ว วิดีโอจะเล่นและลอยขึ้นมาในมุมมอง 3 มิติ</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

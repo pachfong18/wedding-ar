@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Wedding Hologram AR Demo | บ่าวสาวโฮโลแกรม</title>
+  
+  <!-- A-Frame and MindAR -->
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  <script src="./assets/aframe-chromakey-material.min.js"></script>
+
+  <!-- Google Fonts for Elegant Wedding Style -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Prompt', sans-serif;
+      background-color: #0b0c10;
+      color: #fff;
+    }
+
+    /* Loading Screen */
+    #loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, #2d1e2f 0%, #110d14 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      text-align: center;
+      padding: 24px;
+      transition: opacity 0.5s ease;
+    }
+    .heart-loader {
+      font-size: 52px;
+      animation: heartbeat 1.2s infinite;
+      margin-bottom: 16px;
+    }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+    #loading-overlay h2 {
+      font-family: 'Alex Brush', cursive;
+      font-size: 44px;
+      margin: 0;
+      color: #f7d794;
+      font-weight: normal;
+      text-shadow: 0 0 15px rgba(247, 215, 148, 0.4);
+    }
+    #loading-overlay p {
+      color: #d1ccc0;
+      font-size: 15px;
+      margin-top: 10px;
+      max-width: 320px;
+      line-height: 1.6;
+    }
+    .start-btn {
+      margin-top: 25px;
+      padding: 14px 38px;
+      background: linear-gradient(135deg, #f7d794 0%, #e58e26 100%);
+      color: #2c1a06;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(245, 166, 35, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .start-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* UI Overlay during AR */
+    #ar-ui {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 100;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px;
+    }
+
+    /* Top Banner */
+    .ar-header {
+      background: rgba(20, 15, 25, 0.75);
+      backdrop-filter: blur(8px);
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: 1px solid rgba(247, 215, 148, 0.3);
+      text-align: center;
+      margin: 0 auto;
+      max-width: 90%;
+      pointer-events: auto;
+    }
+    .ar-header h3 {
+      font-family: 'Alex Brush', cursive;
+      font-size: 28px;
+      margin: 0;
+      color: #f7d794;
+      font-weight: normal;
+    }
+    .ar-header p {
+      margin: 2px 0 0;
+      font-size: 12px;
+      color: #f1f2f6;
+    }
+
+    /* Target Scanner Guide Frame */
+    .scan-guide {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 260px;
+      height: 150px;
+      border: 2px dashed rgba(247, 215, 148, 0.6);
+      border-radius: 12px;
+      box-shadow: 0 0 30px rgba(247, 215, 148, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .scan-guide span {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 6px 14px;
+      border-radius: 15px;
+      font-size: 12px;
+      color: #f7d794;
+    }
+    .scan-guide.found {
+      opacity: 0;
+    }
+
+    /* Bottom Control Bar */
+    .ar-footer {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 10px;
+      pointer-events: auto;
+    }
+    .ar-btn {
+      background: rgba(20, 15, 25, 0.85);
+      border: 1px solid rgba(247, 215, 148, 0.4);
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 25px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    .ar-btn:active {
+      transform: scale(0.95);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Loading / Greeting Screen -->
+  <div id="loading-overlay">
+    <div class="heart-loader">💖</div>
+    <h2>Wedding Celebration</h2>
+    <p>ยินดีต้อนรับสู่ประสบการณ์ WebAR โฮโลแกรมบ่าวสาว<br>ส่องการ์ดแต่งงานเพื่อชมข้อความพิเศษ</p>
+    <button class="start-btn" id="start-btn">เปิดกล้องสัมผัส AR ✨</button>
+    <p style="font-size: 12px; color: #888; margin-top: 15px;">* รองรับเบราว์เซอร์มือถือทั้ง Safari และ Chrome โดยไม่ต้องลงแอป</p>
+  </div>
+
+  <!-- In-AR Floating UI -->
+  <div id="ar-ui">
+    <div class="ar-header">
+      <h3>Together Forever</h3>
+      <p id="status-text">📱 ส่องกล้องไปที่การ์ดแต่งงานเพื่อเปิดโฮโลแกรม</p>
+    </div>
+
+    <!-- Scanner Guide Border -->
+    <div class="scan-guide" id="scan-guide">
+      <span>เล็งการ์ดให้อยู่ในกรอบนี้</span>
+    </div>
+
+    <div class="ar-footer">
+      <button class="ar-btn" id="sound-btn">
+        <span>🔊</span> <span id="sound-label">เปิดเสียง</span>
+      </button>
+      <button class="ar-btn" id="replay-btn">
+        <span>🔄</span> เล่นใหม่
+      </button>
+    </div>
+  </div>
+
+  <!-- A-Frame AR Scene -->
+  <a-scene 
+    mindar-image="imageTargetSrc: ./assets/card.mind; autoStart: false; filterMinCF: 0.0001; filterBeta: 0.001;" 
+    color-space="sRGB" 
+    renderer="colorManagement: true, physicallyCorrectLights" 
+    vr-mode-ui="enabled: false" 
+    device-orientation-permission-ui="enabled: false">
+    
+    <a-assets>
+      <!-- Green Screen Wedding Couple Video -->
+      <video id="weddingVideo" src="./assets/greenscreen.mp4" preload="auto" loop playsinline webkit-playsinline></video>
+      <img id="cardTarget" src="./assets/card.png">
+    </a-assets>
+
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+    <!-- Target 0: The Wedding Invitation Card -->
+    <a-entity id="targetEntity" mindar-image-target="targetIndex: 0">
+      
+      <!-- Subtle Golden Card Base Glow -->
+      <a-plane 
+        src="#cardTarget" 
+        position="0 0 0" 
+        height="0.552" 
+        width="1" 
+        rotation="0 0 0" 
+        opacity="0.85">
+      </a-plane>
+
+      <!-- Floating Hologram Couple Plane (Chroma Key removed green background) -->
+      <!-- Standing upright on the card with slight forward tilt and pop-out effect -->
+      <a-plane 
+        id="hologramPlane"
+        material="shader: chromakey; src: #weddingVideo; color: 0.1 0.9 0.2; transparent: true" 
+        position="0 0.15 0.1" 
+        scale="0.8 1.0 1" 
+        rotation="15 0 0">
+      </a-plane>
+
+      <!-- Floating Romantic Ring / Heart Particle Ring -->
+      <a-ring 
+        position="0 -0.2 0.05" 
+        radius-inner="0.45" 
+        radius-outer="0.48" 
+        color="#f7d794" 
+        opacity="0.6"
+        rotation="0 0 0"
+        animation="property: rotation; to: 0 0 360; loop: true; dur: 8000; easing: linear">
+      </a-ring>
+
+    </a-entity>
+  </a-scene>
+
+  <script>
+    const startBtn = document.getElementById('start-btn');
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const arUi = document.getElementById('ar-ui');
+    const statusText = document.getElementById('status-text');
+    const scanGuide = document.getElementById('scan-guide');
+    const soundBtn = document.getElementById('sound-btn');
+    const soundLabel = document.getElementById('sound-label');
+    const replayBtn = document.getElementById('replay-btn');
+    
+    const video = document.getElementById('weddingVideo');
+    const sceneEl = document.querySelector('a-scene');
+    const targetEntity = document.getElementById('targetEntity');
+
+    let isAudioMuted = true;
+    video.muted = true; // Start muted to guarantee autoplay permission on iOS/Android
+
+    // Click "Start" to grant camera & audio permissions
+    startBtn.addEventListener('click', () => {
+      loadingOverlay.style.opacity = '0';
+      setTimeout(() => {
+        loadingOverlay.style.display = 'none';
+        arUi.style.display = 'flex';
+      }, 500);
+
+      // Start MindAR Camera
+      const arSystem = sceneEl.systems['mindar-image-system'];
+      if (arSystem) {
+        arSystem.start();
+      }
+    });
+
+    // Detect Target Card
+    targetEntity.addEventListener('targetFound', () => {
+      statusText.innerHTML = '✨ บ่าวสาวปรากฏตัวแล้ว!';
+      scanGuide.classList.add('found');
+      video.play().catch(e => console.log('Autoplay handled:', e));
+    });
+
+    targetEntity.addEventListener('targetLost', () => {
+      statusText.innerHTML = '📱 ส่องกล้องไปที่การ์ดแต่งงาน';
+      scanGuide.classList.remove('found');
+      video.pause();
+    });
+
+    // Audio toggle
+    soundBtn.addEventListener('click', () => {
+      isAudioMuted = !isAudioMuted;
+      video.muted = isAudioMuted;
+      if (!isAudioMuted) {
+        soundLabel.textContent = 'ปิดเสียง';
+        soundBtn.querySelector('span:first-child').textContent = '🔇';
+        video.play();
+      } else {
+        soundLabel.textContent = 'เปิดเสียง';
+        soundBtn.querySelector('span:first-child').textContent = '🔊';
+      }
+    });
+
+    // Replay video
+    replayBtn.addEventListener('click', () => {
+      video.currentTime = 0;
+      video.play();
+    });
+  </script>
+</body>
+</html>
