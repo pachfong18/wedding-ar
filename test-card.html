@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Target Card สำหรับทดสอบ WebAR | Wedding Hologram Demo</title>
+  <title>Target Card แนวนอน 4:3 สำหรับทดสอบ WebAR | Wedding Hologram</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      padding: 30px;
+      padding: 24px;
       background: #0f111a;
       color: #fff;
       font-family: 'Prompt', sans-serif;
@@ -23,55 +23,122 @@
     }
     .container {
       background: #1a1c29;
-      border: 1px solid rgba(247, 215, 148, 0.3);
-      border-radius: 16px;
+      border: 1px solid rgba(247, 215, 148, 0.35);
+      border-radius: 20px;
       padding: 30px;
       text-align: center;
-      max-width: 720px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      max-width: 820px;
+      width: 100%;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.6);
     }
     h1 {
       font-family: 'Alex Brush', cursive;
       color: #f7d794;
-      font-size: 42px;
-      margin: 0 0 10px;
+      font-size: 46px;
+      margin: 0 0 8px;
       font-weight: normal;
+      text-shadow: 0 0 20px rgba(247, 215, 148, 0.3);
     }
     p {
       color: #cbd5e1;
       font-size: 15px;
       line-height: 1.6;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
     .badge {
       display: inline-block;
       background: rgba(247, 215, 148, 0.15);
       color: #f7d794;
-      padding: 6px 14px;
+      padding: 6px 16px;
       border-radius: 20px;
       font-size: 13px;
       margin-bottom: 20px;
-      border: 1px solid rgba(247, 215, 148, 0.3);
+      border: 1px solid rgba(247, 215, 148, 0.35);
     }
-    .card-wrapper {
-      border: 3px solid #f7d794;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 0 25px rgba(247, 215, 148, 0.3);
-      display: inline-block;
-      margin: 10px auto 25px;
-      background: #fff;
-    }
-    .card-wrapper img {
-      display: block;
+    
+    /* 4:3 Landscape Card Container */
+    .card-outer-frame {
+      width: 640px;
       max-width: 100%;
-      height: auto;
-      width: 550px;
+      aspect-ratio: 4 / 3; /* Exact 4:3 Landscape */
+      margin: 10px auto 25px;
+      background: linear-gradient(135deg, #2c1a06 0%, #17101e 100%);
+      border: 3px solid #f7d794;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 0 35px rgba(247, 215, 148, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      box-sizing: border-box;
+      transition: transform 0.3s ease;
     }
+
+    .card-header-label {
+      position: absolute;
+      top: 14px;
+      font-family: 'Alex Brush', cursive;
+      font-size: 26px;
+      color: #f7d794;
+      letter-spacing: 1px;
+    }
+
+    .card-footer-label {
+      position: absolute;
+      bottom: 14px;
+      font-size: 12px;
+      color: #cbd5e1;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .inner-target-wrapper {
+      width: 82%;
+      height: 68%;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0094c6;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
+
+    .inner-target-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Controls bar */
+    .controls-bar {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .btn-action {
+      background: rgba(247, 215, 148, 0.15);
+      border: 1px solid rgba(247, 215, 148, 0.4);
+      color: #f7d794;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-action:hover {
+      background: rgba(247, 215, 148, 0.3);
+    }
+
     .tips {
       background: rgba(255, 255, 255, 0.05);
-      padding: 15px;
-      border-radius: 10px;
+      padding: 16px 20px;
+      border-radius: 12px;
       text-align: left;
       font-size: 13px;
       color: #94a3b8;
@@ -81,28 +148,60 @@
       padding-left: 20px;
     }
     .tips li {
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Wedding Target Card Demo</h1>
-    <div class="badge">🎯 ภาพการ์ดสำหรับใช้กล้องมือถือส่องทดสอบ</div>
-    <p>เมื่อเปิดหน้าเว็บ WebAR บนมือถือแล้ว ให้ <strong>หันกล้องมือถือมาส่องที่รูปภาพด้านล่างนี้</strong><br>ตัวอย่างโฮโลแกรมพร้อมเอฟเฟกต์จะปรากฏขึ้นมาบนรูปการ์ดทันทีครับ!</p>
+    <h1>Wedding Target Card (แนวนอน 4:3)</h1>
+    <div class="badge">🎯 การ์ดแต่งงานสัดส่วน 4:3 แนวนอน พร้อมระบบตรวจจับโฮโลแกรม</div>
+    <p>เปิดหน้าเว็บ WebAR บนมือถือ แล้ว <strong>หันกล้องมือถือมาส่องที่การ์ดแนวนอน 4:3 ด้านล่างนี้</strong><br>บ่าวสาวจะปรากฏตัวขนาดใหญ่ พร้อม <strong>หัวใจ 3D พุ่งและลอยขึ้นมารอบตัว</strong> ทันทีครับ!</p>
     
-    <div class="card-wrapper">
-      <img src="./assets/card.png" alt="Target Wedding Card">
+    <!-- Quick Controls -->
+    <div class="controls-bar">
+      <button class="btn-action" onclick="toggleCardRotation()">🔄 สลับหมุนการ์ดบนจอ 90°</button>
+      <button class="btn-action" onclick="toggleFullscreen()">⛶ ขยายเต็มจอ</button>
+    </div>
+
+    <!-- 4:3 Landscape Wedding Card Target -->
+    <div class="card-outer-frame" id="cardFrame">
+      <div class="card-header-label">Wedding Invitation - Save The Date</div>
+      
+      <div class="inner-target-wrapper">
+        <img src="./assets/card.png" alt="Target Wedding Card">
+      </div>
+
+      <div class="card-footer-label">Together Forever • Landscape 4:3</div>
     </div>
 
     <div class="tips">
-      <strong>💡 เคล็ดลับการทดสอบ:</strong>
+      <strong>💡 สิ่งที่อัปเดตในเวอร์ชันนี้:</strong>
       <ul>
-        <li>ปรับแสงหน้าจอคอมให้สว่างพอดี ไม่มืดเกินไป</li>
-        <li>ถือมือถือให้ขนานกับหน้าจอคอม ระยะห่างประมาณ 20-30 ซม.</li>
-        <li>เมื่อกล้องจับภาพการ์ดได้แล้ว วิดีโอจะเล่นและลอยขึ้นมาในมุมมอง 3 มิติ</li>
+        <li><strong>แนวนอน 4:3:</strong> รองรับการส่องการ์ดแต่งงานแนวนอนอย่างสมบูรณ์แบบ</li>
+        <li><strong>ขนาดโฮโลแกรมใหญ่ขึ้น:</strong> บ่าวสาวตัวใหญ่ เด่นชัด ยืนตระหง่านอยู่บนการ์ด</li>
+        <li><strong>หัวใจ 3D พุ่งออกมา:</strong> มีหัวใจ 3D เคลือบเงาสะท้อนแสง พุ่งและลอยละล่องหมุนตัวรอบบ่าวสาว</li>
+        <li><strong>ปุ่มหมุนตัวบ่าวสาว:</strong> บนหน้าจอมือถือมีปุ่ม <code>🔄 หมุนตัวบ่าวสาว</code> เพื่อปรับมุมให้ยืนตรงเป๊ะได้ใน 1 คลิก</li>
       </ul>
     </div>
   </div>
+
+  <script>
+    let isRotated = false;
+    const cardFrame = document.getElementById('cardFrame');
+
+    function toggleCardRotation() {
+      isRotated = !isRotated;
+      cardFrame.style.transform = isRotated ? 'rotate(90deg)' : 'rotate(0deg)';
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => console.log(err));
+      } else {
+        document.exitFullscreen().catch(err => console.log(err));
+      }
+    }
+  </script>
 </body>
 </html>

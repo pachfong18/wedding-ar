@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Wedding Hologram AR Demo | บ่าวสาวโฮโลแกรม</title>
+  <title>Wedding Hologram AR | บ่าวสาวโฮโลแกรม แนวนอน 4:3</title>
   
   <!-- A-Frame and MindAR -->
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
@@ -49,21 +49,21 @@
       transition: opacity 0.5s ease;
     }
     .heart-loader {
-      font-size: 52px;
+      font-size: 56px;
       animation: heartbeat 1.2s infinite;
       margin-bottom: 16px;
     }
     @keyframes heartbeat {
       0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.2); }
+      50% { transform: scale(1.22); filter: drop-shadow(0 0 15px rgba(255, 75, 110, 0.8)); }
     }
     #loading-overlay h2 {
       font-family: 'Alex Brush', cursive;
-      font-size: 44px;
+      font-size: 46px;
       margin: 0;
       color: #f7d794;
       font-weight: normal;
-      text-shadow: 0 0 15px rgba(247, 215, 148, 0.4);
+      text-shadow: 0 0 20px rgba(247, 215, 148, 0.4);
     }
     #loading-overlay p {
       color: #d1ccc0;
@@ -72,9 +72,19 @@
       max-width: 320px;
       line-height: 1.6;
     }
+    .badge-landscape {
+      background: rgba(247, 215, 148, 0.18);
+      color: #f7d794;
+      border: 1px solid rgba(247, 215, 148, 0.4);
+      padding: 4px 12px;
+      border-radius: 14px;
+      font-size: 12px;
+      margin-top: 8px;
+      display: inline-block;
+    }
     .start-btn {
       margin-top: 25px;
-      padding: 14px 38px;
+      padding: 14px 40px;
       background: linear-gradient(135deg, #f7d794 0%, #e58e26 100%);
       color: #2c1a06;
       font-size: 16px;
@@ -106,40 +116,41 @@
 
     /* Top Banner */
     .ar-header {
-      background: rgba(20, 15, 25, 0.75);
-      backdrop-filter: blur(8px);
-      padding: 10px 20px;
-      border-radius: 20px;
-      border: 1px solid rgba(247, 215, 148, 0.3);
+      background: rgba(20, 15, 25, 0.8);
+      backdrop-filter: blur(10px);
+      padding: 12px 24px;
+      border-radius: 24px;
+      border: 1px solid rgba(247, 215, 148, 0.4);
       text-align: center;
       margin: 0 auto;
       max-width: 90%;
       pointer-events: auto;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
     }
     .ar-header h3 {
       font-family: 'Alex Brush', cursive;
-      font-size: 28px;
+      font-size: 30px;
       margin: 0;
       color: #f7d794;
       font-weight: normal;
     }
     .ar-header p {
-      margin: 2px 0 0;
-      font-size: 12px;
+      margin: 3px 0 0;
+      font-size: 13px;
       color: #f1f2f6;
     }
 
-    /* Target Scanner Guide Frame */
+    /* Target Scanner Guide Frame (Landscape 4:3) */
     .scan-guide {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 260px;
-      height: 150px;
-      border: 2px dashed rgba(247, 215, 148, 0.6);
-      border-radius: 12px;
-      box-shadow: 0 0 30px rgba(247, 215, 148, 0.2);
+      width: 280px;
+      height: 210px; /* 4:3 Ratio */
+      border: 2px dashed rgba(247, 215, 148, 0.7);
+      border-radius: 14px;
+      box-shadow: 0 0 35px rgba(247, 215, 148, 0.25);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -147,7 +158,7 @@
       pointer-events: none;
     }
     .scan-guide span {
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.65);
       padding: 6px 14px;
       border-radius: 15px;
       font-size: 12px;
@@ -161,8 +172,9 @@
     .ar-footer {
       display: flex;
       justify-content: center;
-      gap: 12px;
-      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 12px;
       pointer-events: auto;
     }
     .ar-btn {
@@ -176,13 +188,131 @@
       align-items: center;
       gap: 6px;
       cursor: pointer;
-      backdrop-filter: blur(6px);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     }
     .ar-btn:active {
       transform: scale(0.95);
     }
   </style>
+
+  <!-- Custom 3D Shooting Hearts Component -->
+  <script>
+    AFRAME.registerComponent('heart-burst', {
+      schema: {
+        count: { type: 'int', default: 22 }
+      },
+      init: function () {
+        const el = this.el;
+        
+        // 3D Extruded Heart Shape
+        const x = 0, y = 0;
+        const heartShape = new THREE.Shape();
+        heartShape.moveTo( x + 25, y + 25 );
+        heartShape.bezierCurveTo( x + 25, y + 25, x + 20, y, x, y );
+        heartShape.bezierCurveTo( x - 30, y, x - 30, y + 35, x - 30, y + 35 );
+        heartShape.bezierCurveTo( x - 30, y + 55, x - 10, y + 77, x + 25, y + 95 );
+        heartShape.bezierCurveTo( x + 60, y + 77, x + 80, y + 55, x + 80, y + 35 );
+        heartShape.bezierCurveTo( x + 80, y + 35, x + 80, y, x + 50, y );
+        heartShape.bezierCurveTo( x + 35, y, x + 25, y + 25, x + 25, y + 25 );
+
+        const extrudeSettings = {
+          depth: 7,
+          bevelEnabled: true,
+          bevelSegments: 3,
+          steps: 1,
+          bevelSize: 3,
+          bevelThickness: 3
+        };
+
+        const geometry = new THREE.ExtrudeGeometry(heartShape, extrudeSettings);
+        geometry.center();
+        // Scale to AR world size (~0.18m) and flip right-side up
+        geometry.scale(0.0024, -0.0024, 0.0024);
+
+        const colors = [0xff2a6d, 0xff758c, 0xf7d794, 0xff5e7e, 0xff3838, 0xffb8b8];
+        const materials = colors.map(c => new THREE.MeshStandardMaterial({
+          color: c,
+          metalness: 0.5,
+          roughness: 0.15,
+          emissive: c,
+          emissiveIntensity: 0.35,
+          transparent: true,
+          opacity: 0.95
+        }));
+
+        this.hearts = [];
+        this.group = new THREE.Group();
+        el.object3D.add(this.group);
+
+        for (let i = 0; i < this.data.count; i++) {
+          const mat = materials[i % materials.length];
+          const mesh = new THREE.Mesh(geometry, mat);
+
+          const p = {
+            mesh: mesh,
+            baseX: (Math.random() - 0.5) * 1.2,
+            startY: -0.3 + Math.random() * 0.4,
+            startZ: 0.1 + Math.random() * 0.3,
+            speedY: 0.004 + Math.random() * 0.007,
+            speedZ: 0.003 + Math.random() * 0.006,
+            rotSpeedX: (Math.random() - 0.5) * 0.04,
+            rotSpeedY: (Math.random() - 0.5) * 0.05,
+            rotSpeedZ: (Math.random() - 0.5) * 0.03,
+            scale: 0.6 + Math.random() * 0.8,
+            swayOffset: Math.random() * Math.PI * 2,
+            swaySpeed: 1.5 + Math.random() * 2,
+            yMax: 1.2 + Math.random() * 0.5
+          };
+
+          mesh.position.set(p.baseX, p.startY, p.startZ);
+          mesh.scale.set(p.scale, p.scale, p.scale);
+          this.group.add(mesh);
+          this.hearts.push(p);
+        }
+
+        this.active = false;
+        this.group.visible = false;
+      },
+
+      tick: function (time, delta) {
+        if (!this.active) return;
+        const t = time * 0.0015;
+
+        this.hearts.forEach(p => {
+          p.mesh.position.y += p.speedY;
+          p.mesh.position.z += p.speedZ;
+          // Dreamy horizontal sway
+          p.mesh.position.x = p.baseX + Math.sin(t * p.swaySpeed + p.swayOffset) * 0.18;
+
+          p.mesh.rotation.x += p.rotSpeedX;
+          p.mesh.rotation.y += p.rotSpeedY;
+          p.mesh.rotation.z += p.rotSpeedZ;
+
+          // Gentle breathing pulse
+          const pulse = p.scale * (1 + 0.1 * Math.sin(t * 3 + p.swayOffset));
+          p.mesh.scale.set(pulse, pulse, pulse);
+
+          // Reset loop when heart shoots up high
+          if (p.mesh.position.y > p.yMax || p.mesh.position.z > 1.2) {
+            p.mesh.position.y = p.startY;
+            p.mesh.position.z = p.startZ;
+            p.mesh.position.x = p.baseX;
+          }
+        });
+      },
+
+      playBurst: function () {
+        this.active = true;
+        this.group.visible = true;
+      },
+
+      stopBurst: function () {
+        this.active = false;
+        this.group.visible = false;
+      }
+    });
+  </script>
 </head>
 <body>
 
@@ -190,7 +320,8 @@
   <div id="loading-overlay">
     <div class="heart-loader">💖</div>
     <h2>Wedding Celebration</h2>
-    <p>ยินดีต้อนรับสู่ประสบการณ์ WebAR โฮโลแกรมบ่าวสาว<br>ส่องการ์ดแต่งงานเพื่อชมข้อความพิเศษ</p>
+    <div class="badge-landscape">🌸 การ์ดแต่งงานแนวนอน 4:3 | 3D Hologram</div>
+    <p>ยินดีต้อนรับสู่ประสบการณ์ WebAR โฮโลแกรมบ่าวสาว<br>ส่องการ์ดแต่งงานแนวนอนเพื่อเปิดภาพและหัวใจ 3D</p>
     <button class="start-btn" id="start-btn">เปิดกล้องสัมผัส AR ✨</button>
     <p style="font-size: 12px; color: #888; margin-top: 15px;">* รองรับเบราว์เซอร์มือถือทั้ง Safari และ Chrome โดยไม่ต้องลงแอป</p>
   </div>
@@ -199,20 +330,23 @@
   <div id="ar-ui">
     <div class="ar-header">
       <h3>Together Forever</h3>
-      <p id="status-text">📱 ส่องกล้องไปที่การ์ดแต่งงานเพื่อเปิดโฮโลแกรม</p>
+      <p id="status-text">📱 ส่องกล้องไปที่การ์ดแต่งงานแนวนอน 4:3</p>
     </div>
 
-    <!-- Scanner Guide Border -->
+    <!-- Scanner Guide Border (Landscape 4:3) -->
     <div class="scan-guide" id="scan-guide">
-      <span>เล็งการ์ดให้อยู่ในกรอบนี้</span>
+      <span>เล็งการ์ดแนวนอน 4:3 ในกรอบนี้</span>
     </div>
 
     <div class="ar-footer">
       <button class="ar-btn" id="sound-btn">
         <span>🔊</span> <span id="sound-label">เปิดเสียง</span>
       </button>
+      <button class="ar-btn" id="rotate-btn">
+        <span>🔄</span> <span id="rotate-label">หมุนตัวบ่าวสาว</span>
+      </button>
       <button class="ar-btn" id="replay-btn">
-        <span>🔄</span> เล่นใหม่
+        <span>▶️</span> เล่นใหม่
       </button>
     </div>
   </div>
@@ -231,40 +365,47 @@
       <img id="cardTarget" src="./assets/card.png">
     </a-assets>
 
+    <!-- Warm Wedding Lights -->
+    <a-light type="ambient" color="#fff2db" intensity="1.2"></a-light>
+    <a-light type="directional" color="#ffd382" position="1 2 1" intensity="1.5"></a-light>
+
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    <!-- Target 0: The Wedding Invitation Card -->
-    <a-entity id="targetEntity" mindar-image-target="targetIndex: 0">
+    <!-- Target 0: The Wedding Invitation Card (Landscape 4:3) -->
+    <a-entity id="targetEntity" mindar-image-target="targetIndex: 0" heart-burst="count: 22">
       
-      <!-- Subtle Golden Card Base Glow -->
+      <!-- 4:3 Landscape Golden Wedding Card Base Plane -->
       <a-plane 
+        id="cardPlane"
         src="#cardTarget" 
         position="0 0 0" 
-        height="0.552" 
-        width="1" 
+        width="1.333" 
+        height="1.0" 
         rotation="0 0 0" 
-        opacity="0.85">
+        opacity="0.88">
       </a-plane>
 
-      <!-- Floating Hologram Couple Plane (Chroma Key removed green background) -->
-      <!-- Standing upright on the card with slight forward tilt and pop-out effect -->
-      <a-plane 
-        id="hologramPlane"
-        material="shader: chromakey; src: #weddingVideo; color: 0.1 0.9 0.2; transparent: true" 
-        position="0 0.15 0.1" 
-        scale="0.8 1.0 1" 
-        rotation="15 0 0">
-      </a-plane>
+      <!-- Hologram Couple Plane (Enlarged, Towering proudly above the card) -->
+      <!-- Scale is set large (1.8 width x 2.4 height) with Chroma Key green removal -->
+      <a-entity id="hologramContainer" position="0 0.45 0.2">
+        <a-plane 
+          id="hologramPlane"
+          material="shader: chromakey; src: #weddingVideo; color: 0.1 0.9 0.2; transparent: true" 
+          position="0 0 0" 
+          scale="1.8 2.4 1.8" 
+          rotation="10 0 0">
+        </a-plane>
+      </a-entity>
 
-      <!-- Floating Romantic Ring / Heart Particle Ring -->
+      <!-- Glowing Golden Wedding Ring on Card Base -->
       <a-ring 
-        position="0 -0.2 0.05" 
-        radius-inner="0.45" 
-        radius-outer="0.48" 
+        position="0 -0.15 0.04" 
+        radius-inner="0.48" 
+        radius-outer="0.52" 
         color="#f7d794" 
-        opacity="0.6"
+        opacity="0.75"
         rotation="0 0 0"
-        animation="property: rotation; to: 0 0 360; loop: true; dur: 8000; easing: linear">
+        animation="property: rotation; to: 0 0 360; loop: true; dur: 9000; easing: linear">
       </a-ring>
 
     </a-entity>
@@ -278,14 +419,17 @@
     const scanGuide = document.getElementById('scan-guide');
     const soundBtn = document.getElementById('sound-btn');
     const soundLabel = document.getElementById('sound-label');
+    const rotateBtn = document.getElementById('rotate-btn');
     const replayBtn = document.getElementById('replay-btn');
     
     const video = document.getElementById('weddingVideo');
     const sceneEl = document.querySelector('a-scene');
     const targetEntity = document.getElementById('targetEntity');
+    const hologramContainer = document.getElementById('hologramContainer');
 
     let isAudioMuted = true;
-    video.muted = true; // Start muted to guarantee autoplay permission on iOS/Android
+    let rotationAngle = 0; // 0 -> 90 -> 180 -> 270 degrees
+    video.muted = true; // Start muted for reliable autoplay on mobile browsers
 
     // Click "Start" to grant camera & audio permissions
     startBtn.addEventListener('click', () => {
@@ -304,15 +448,26 @@
 
     // Detect Target Card
     targetEntity.addEventListener('targetFound', () => {
-      statusText.innerHTML = '✨ บ่าวสาวปรากฏตัวแล้ว!';
+      statusText.innerHTML = '💖 บ่าวสาวปรากฏตัวพร้อมหัวใจ 3D!';
       scanGuide.classList.add('found');
       video.play().catch(e => console.log('Autoplay handled:', e));
+      
+      // Trigger 3D Hearts Burst
+      const burst = targetEntity.components['heart-burst'];
+      if (burst) {
+        burst.playBurst();
+      }
     });
 
     targetEntity.addEventListener('targetLost', () => {
-      statusText.innerHTML = '📱 ส่องกล้องไปที่การ์ดแต่งงาน';
+      statusText.innerHTML = '📱 ส่องกล้องไปที่การ์ดแต่งงานแนวนอน 4:3';
       scanGuide.classList.remove('found');
       video.pause();
+
+      const burst = targetEntity.components['heart-burst'];
+      if (burst) {
+        burst.stopBurst();
+      }
     });
 
     // Audio toggle
@@ -327,6 +482,12 @@
         soundLabel.textContent = 'เปิดเสียง';
         soundBtn.querySelector('span:first-child').textContent = '🔊';
       }
+    });
+
+    // Rotate Hologram button (0 deg -> 90 deg -> 180 deg -> 270 deg)
+    rotateBtn.addEventListener('click', () => {
+      rotationAngle = (rotationAngle + 90) % 360;
+      hologramContainer.setAttribute('rotation', `0 0 ${rotationAngle}`);
     });
 
     // Replay video
