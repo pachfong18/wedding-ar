@@ -8,9 +8,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       margin: 0;
-      padding: 24px;
+      padding: 30px 20px;
       background: #0f111a;
       color: #fff;
       font-family: 'Prompt', sans-serif;
@@ -19,7 +22,6 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      box-sizing: border-box;
     }
     .container {
       background: #1a1c29;
@@ -43,7 +45,7 @@
       color: #cbd5e1;
       font-size: 15px;
       line-height: 1.6;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
     .badge {
       display: inline-block;
@@ -56,43 +58,42 @@
       border: 1px solid rgba(247, 215, 148, 0.35);
     }
     
-    /* Dedicated Landscape Wedding Card Container */
+    /* Horizontal Landscape Card Frame */
     .card-outer-frame {
-      width: 740px;
+      width: 680px;
       max-width: 100%;
-      margin: 10px auto 25px;
+      margin: 10px auto 20px;
       background: linear-gradient(135deg, #24160c 0%, #150f1d 100%);
       border: 3px solid #f7d794;
       border-radius: 18px;
-      padding: 25px 20px;
+      padding: 24px 20px;
       box-shadow: 0 0 35px rgba(247, 215, 148, 0.3);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      box-sizing: border-box;
     }
 
     .card-header-label {
       font-family: 'Alex Brush', cursive;
       font-size: 34px;
       color: #f7d794;
-      margin-bottom: 15px;
+      margin-bottom: 14px;
       letter-spacing: 1px;
     }
 
     .card-footer-label {
-      margin-top: 15px;
+      margin-top: 14px;
       font-size: 12px;
       color: #cbd5e1;
       letter-spacing: 2px;
       text-transform: uppercase;
     }
 
-    /* Target Image displayed fully in Landscape (Width: 540px, Height: ~298px) */
+    /* Target Image displayed explicitly in Horizontal Landscape (674x372) */
     .inner-target-wrapper {
       border: 2px solid rgba(247, 215, 148, 0.6);
-      border-radius: 8px;
+      border-radius: 10px;
       overflow: hidden;
       display: inline-block;
       background: #0094c6;
@@ -100,47 +101,26 @@
     }
 
     .inner-target-wrapper img {
-      width: 540px;
+      width: 580px;
       max-width: 100%;
       height: auto;
       display: block;
+      image-orientation: none; /* Ignore any residual orientation */
     }
 
-    /* Controls bar */
-    .controls-bar {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
     .btn-action {
       background: rgba(247, 215, 148, 0.15);
       border: 1px solid rgba(247, 215, 148, 0.4);
       color: #f7d794;
-      padding: 8px 18px;
+      padding: 8px 20px;
       border-radius: 20px;
       font-size: 13px;
       cursor: pointer;
       transition: all 0.2s;
+      margin-top: 5px;
     }
     .btn-action:hover {
       background: rgba(247, 215, 148, 0.3);
-    }
-
-    .tips {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 16px 20px;
-      border-radius: 12px;
-      text-align: left;
-      font-size: 13px;
-      color: #94a3b8;
-    }
-    .tips ul {
-      margin: 8px 0 0;
-      padding-left: 20px;
-    }
-    .tips li {
-      margin-bottom: 6px;
     }
   </style>
 </head>
@@ -148,13 +128,7 @@
   <div class="container">
     <h1>Wedding Target Card (แนวนอน)</h1>
     <div class="badge">🎯 การ์ดแต่งงานแนวนอน สำหรับส่องด้วยกล้องมือถือ</div>
-    <p>เปิดหน้าเว็บ WebAR บนมือถือ แล้ว <strong>หันกล้องมือถือมาส่องที่การ์ดแนวนอนด้านล่างนี้</strong><br>
-    จะมี <strong>อนิเมชันหัวใจ 3D พุ่งออกมาก่อน แล้วค่อยเฟดออก จากนั้นตัวบ่าวสาวจะปรากฏขึ้นมา</strong> ครับ!</p>
-    
-    <!-- Controls -->
-    <div class="controls-bar">
-      <button class="btn-action" onclick="toggleFullscreen()">⛶ ขยายการ์ดเต็มจอ</button>
-    </div>
+    <p>เปิดหน้าเว็บ WebAR บนมือถือ แล้วส่องมาที่การ์ดแนวนอนด้านล่างนี้ครับ</p>
 
     <!-- Landscape Wedding Card Target -->
     <div class="card-outer-frame" id="cardFrame">
@@ -167,13 +141,8 @@
       <div class="card-footer-label">Together Forever • Landscape Mode</div>
     </div>
 
-    <div class="tips">
-      <strong>✨ ลำดับอนิเมชันใหม่:</strong>
-      <ul>
-        <li><strong>ช่วงที่ 1 (0 – 2.2 วินาที):</strong> หัวใจ 3D ระเบิดพุ่งออกมาจากการ์ดลอยขึ้นมาหามือถืออย่างงดงาม</li>
-        <li><strong>ช่วงที่ 2 (2.2 – 3.0 วินาที):</strong> หัวใจค่อยๆ เฟดจางหายไป (Fade Out)</li>
-        <li><strong>ช่วงที่ 3 (3.0 วินาทีเป็นต้นไป):</strong> ตัวบ่าวสาวโผล่ขึ้นมาขนาดใหญ่ในแนวตั้งตรง พร้อมเล่นวิดีโอเสียงทักทาย</li>
-      </ul>
+    <div>
+      <button class="btn-action" onclick="toggleFullscreen()">⛶ ขยายการ์ดเต็มจอ</button>
     </div>
   </div>
 
